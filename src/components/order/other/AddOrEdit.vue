@@ -6,8 +6,10 @@
       <el-row>
         <el-col :span="6">
           <el-form-item size="mini" label="客户">
-            <el-select v-if="!isEdit" :disabled="isEdit" v-model="form.business_user_id" @change="selectCustomer" filterable placeholder="请选择">
-              <el-option v-for="item in tempCustomerInfo" :key="item.id" :label="item.business_name" :value="item.id"></el-option>
+            <el-select v-if="!isEdit" :disabled="isEdit" v-model="form.business_user_id" @change="selectCustomer"
+                       filterable placeholder="请选择">
+              <el-option v-for="item in tempCustomerInfo" :key="item.id" :label="item.business_name"
+                         :value="item.id"></el-option>
             </el-select>
             <div v-else>
               {{form.business_name}}
@@ -16,7 +18,8 @@
         </el-col>
         <el-col v-if="!isEdit" :span="6">
           <el-form-item size="mini" label="创建订单时间">
-            <el-date-picker format="yyyy-MM-dd HH:mm:ss" v-model="form.first_day_order_cycle" type="datetime" placeholder="选择日期" :picker-options="pickerOptions"></el-date-picker>
+            <el-date-picker format="yyyy-MM-dd HH:mm:ss" v-model="form.first_day_order_cycle" type="datetime"
+                            placeholder="选择日期" :picker-options="pickerOptions"></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="6">
@@ -77,14 +80,16 @@
         </el-col>
         <el-col :span="8">
           <el-form-item size="mini" label="应收总额" style="color:red;">
-            ￥{{form.pay_reality_need_money == null? '0': (typeof (form.pay_reality_need_money) == 'undefined' ? '0' : form.pay_reality_need_money)}}
+            ￥{{form.pay_reality_need_money == null? '0': (typeof (form.pay_reality_need_money) == 'undefined' ? '0' :
+            form.pay_reality_need_money)}}
           </el-form-item>
         </el-col>
       </el-row>
       <el-button size="mini" type="primary" style="margin-bottom: 10px" @click="onAddProduct">添加商品</el-button>
       <el-row>
         <!--style="border: 1px solid #eeeeee"-->
-        <el-col :gutter="10" v-for="product in form.products" :key="product.product_standard_id" :span="4" style="border: 1px solid #eeeeee;padding: 10px;height: 300px;">
+        <el-col :gutter="10" v-for="product in form.products" :key="product.product_standard_id" :span="4"
+                style="border: 1px solid #eeeeee;padding: 10px;height: 300px;">
           <el-form-item label-width="50px" size="mini" label="商品" class="removeDistance">
             <!--<el-autocomplete style="width: 100%" placeholder="请输入商品名称,选择搜索值" :disabled="isEdit" :fetch-suggestions="productSearch" v-model="form.product_name" @select='selectProduct'>-->
             <!--<template slot-scope="props">-->
@@ -328,7 +333,7 @@
           // {'value': '南拳妈妈龙虾盖浇饭', 'address': '普陀区金沙江路1699号鑫乐惠美食广场A13'}
         ],
         pickerOptions: {
-          disabledDate (time) {
+          disabledDate: function (time) {
             return time.getTime() > Date.now() - 8.64e6
           }
         }
@@ -425,7 +430,12 @@
         if (this.addProductBefore()) { // 表单校验
           return
         }
+        console.log(this.tempProduct)
+        console.log(this.form.products)
         this.form.products.push(this.tempProduct)
+        console.log('-----------------------')
+        console.log(this.tempProduct)
+        console.log(this.form.products)
         this.successMsg('成功添加商品')
         this.on_off.isAddProduct = false
       },
@@ -439,36 +449,10 @@
       },
       customerSearch: function (inputContent, cb) { // 客户查询
         let tempCustomerInfo = this.tempCustomerInfo
-        // console.log('初始数据')
-        // console.log(tempCustomerInfo)
-        // console.log('inputContent:' + inputContent)
-        let results = inputContent ? tempCustomerInfo.filter(this.createFilter(inputContent)) : '不存在该客户'
-        // console.log('输出内容')
-        // console.log(results)
-        cb(results)
 
-        // clearTimeout(this.timeout)
-        // this.timeout = setTimeout(() => {
-        //   this.$http.post('/manage/customer/getCustomerInfoByQuery', {'QueryString': inputContent}).then(
-        //     (response) => {
-        //       this.tempCustomerInfo = response.data
-        //       cb(response.data)
-        //     }
-        //   )
-        // }, 3000 * Math.random())
+        let results = inputContent ? tempCustomerInfo.filter(this.createFilter(inputContent)) : '不存在该客户'
+        cb(results)
       },
-      // productSearch: function (inputContent, cb) { // 商品查询
-      //   console.log('商品查询开始')
-      //   clearTimeout(this.timeout)
-      //   this.timeout = setTimeout(() => {
-      //     this.$http.post('/manage/order/getProductInfoByQuery', {'queryString': inputContent}).then(
-      //       (response) => {
-      //         // 直接返回对象数组,每个对象包含一个value
-      //         cb(response.data)
-      //       }
-      //     )
-      //   }, 3000 * Math.random())
-      // },
       productSearch: function (inputContent) {
         if (inputContent !== '') {
           this.on_off.tempProductInfoLoading = true
@@ -578,7 +562,10 @@
           return
         }
         this.form.first_day_order_cycle = dateFmt(this.form.first_day_order_cycle)
-        this.$http.post('/manage/order/save', Object.assign({}, this.form, {'products': JSON.stringify(this.form.products), 'orderId': this.editRowId})).then(
+        this.$http.post('/manage/order/save', Object.assign({}, this.form, {
+          'products': JSON.stringify(this.form.products),
+          'orderId': this.editRowId
+        })).then(
           (response) => {
             this.$emit('update:showDialog', false)
             if (this.editRowId) {
@@ -599,12 +586,6 @@
             break
           }
         }
-        // for (productsInfo in this.tempProductsInfo) {
-        //   console.log(productsInfo.brand)
-        //   // if (productsInfo.product_id === productId) {
-        //   //
-        //   // }
-        // }
         this.$http.post('/manage/order/getProductIdStandardsInfo', {'productId': productId}).then(
           (response) => {
             this.tempProductStandardsInfo = response.data

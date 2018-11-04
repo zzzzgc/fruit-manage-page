@@ -21,13 +21,13 @@ Vue.prototype._uploadFilePath = ajaxPrefix + 'manage/common/upload'
 
 // ---------------------------------------------------------------
 // // 本地:文件下载地址,例如直接访问-> this._downloadFilePath + 文件名
-// Vue.prototype._downloadFilePath = 'http://localhost:8080/upload/file/'
+Vue.prototype._downloadFilePath = 'http://localhost:8080/upload/file/'
 
 // 测试:文件下载地址,例如直接访问-> this._downloadFilePath + 文件名
 // Vue.prototype._downloadFilePath = 'http://192.168.3.123:8080/upload/file/'
 
 // // 正式:文件下载地址,例如直接访问-> this._downloadFilePath + 文件名
-Vue.prototype._downloadFilePath = 'http://admin.52xiguo.com/upload/file/'
+// Vue.prototype._downloadFilePath = 'http://admin.52xiguo.com/upload/file/'
 // ----------------------------------------------------------------
 
 // excel文件下载地址,JFINAL设置的上传下载地址
